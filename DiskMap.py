@@ -1,6 +1,8 @@
 from init import *
 from main_funcs import *
 
+##### this is the DiskMap class object 
+
 class DiskMap():
 
     def __init__(self,agn):
@@ -8,6 +10,7 @@ class DiskMap():
         self.lams = []
         self.m9 = []
         self.u_space = []
+        ## initialize with some dummy variables that will be used to keep track of steps
 
     def __repr__(self):
         return(self.agn)
@@ -16,25 +19,34 @@ class DiskMap():
         return(self.agn)
 
     def feed_lc(self,file):
+        ### load in the lightcurve files 
         self.file = file
+        ### lightcurves need to be in a particular format, which will be discussed in the data cleaning scripts/notebook
         table = np.genfromtxt(file)
         self.td_ij = table[:,0]
         self.lam_ij = table[:,1]
         self.lc_ij = table[:,2]
         self.err_ij = table[:,3]
-        
+
+        ### list of wavelengths for lightcurves
         self.lams = np.unique(self.lam_ij)
+        ### how many datapoints - note that this has nothing to do with frequency nu
         self.nu = len(self.lc_ij)
         print('lightcurve imported')
         
-    def feed_params(self,redshift,dist,mass,nedd,alpha,inc):
+    def feed_params(self,redshift,dist,mass,nedd,alpha=6,inc=0):
         self.z = redshift
+        ## give distance in megaparsecs please!!!!
         self.dist = dist*1e6*pc2cm
+        ### mass in units of 1e9 Msun
         self.m9 = mass
         if self.m9 > 1000:
             print('are you sure you gave mass in units of 1/1e9 Msun...')
+        ### eddington ratio nedd (n looks like eta)
         self.nedd = nedd
+        ### alpha is the innermost disk radius, default is 6R_g = 3R_s
         self.alpha = alpha
+        ### inclination 
         if inc < 0 or inc>90:
             print('please give inclination between 0 and 90 deg')
         self.inc = inc
