@@ -92,8 +92,9 @@ class DiskMap():
         kernel = np.array(kernel)
         kernel *= 1/np.max(kernel)
         return(kernel)
-
+    
     def make_T_prof(self):
+        ### this produces a temperature profile 
         T_prof = T0_u(self.u_space,nEdd=self.nedd,M9=self.m9,Alpha=self.alpha)
         return(T_prof)
 
